@@ -90,14 +90,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload Windows Build
-        if: matrix.os == 'windows-latest'
-        run: |
-          curl -v -F "file=@dist/Train Lag Setup 0.3.0.exe" http://162.19.154.182:9000/cdn/upload
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Upload Windows Portable Build
         if: matrix.os == 'windows-latest'
         run: |
