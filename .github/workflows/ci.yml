@@ -12,12 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
-        include:
-          - os: macos-latest
-            builds: ['mac-arm', 'mac-x64'] 
-          - os: windows-latest
-            builds: ['win']
+        os: [macos-latest, windows-latest, macos-13]
     
     steps:
       - name: Check out Git repository
@@ -50,7 +45,7 @@ jobs:
           yarn config set msvs_version 2019 --global
 
       - name: Setup macOS dependencies
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-latest' || matrix.os == 'macos-13' 
         run: |
           brew install pkg-config cairo pango libpng jpeg giflib librsvg
 
