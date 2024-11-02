@@ -1,0 +1,72 @@
+name: Build and Deploy Train Lag
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            builds: ['mac', 'mac-arm']
+          - os: windows-latest
+            builds: ['win']
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Build Windows
+        if: matrix.os == 'windows-latest'
+        run: npm run pack:win
+        
+      - name: Build macOS (Intel)
+        if: matrix.os == 'macos-latest'
+        run: npm run pack:mac
+        
+      - name: Build macOS (Apple Silicon)
+        if: matrix.os == 'macos-latest'
+        run: npm run pack:mac-arm
+
+      - name: Upload Windows Build
+        if: matrix.os == 'windows-latest'
+        run: |
+          curl -v -F "file=@dist/Train Lag Setup.exe" http://162.19.154.182:9000/cdn/upload
+        
+      - name: Upload macOS Intel Build
+        if: matrix.os == 'macos-latest'
+        run: |
+          curl -v -F "file=@dist/Train Lag-x64.dmg" http://162.19.154.182:9000/cdn/upload
+          
+      - name: Upload macOS ARM Build
+        if: matrix.os == 'macos-latest'
+        run: |
+          curl -v -F "file=@dist/Train Lag-arm64.dmg" http://162.19.154.182:9000/cdn/upload
+
+      - name: Upload Artifacts to GitHub
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-builds
+          path: |
+            dist/*.exe
+            dist/*.dmg
+          retention-days: 5

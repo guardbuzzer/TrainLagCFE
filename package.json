@@ -1,0 +1,62 @@
+{
+  "name": "train-lag-overlay",
+  "version": "0.1.0",
+  "description": "An overlay system for Train Lag using Electron",
+  "main": "output/main.js",
+  "scripts": {
+    "start": "tsc && electron .",
+    "build": "tsc",
+    "postinstall": "tsc && electron-rebuild",
+    "pack:mac": "tsc && electron-rebuild -a x64 && electron-builder --mac --x64",
+    "pack:mac-arm": "tsc && electron-rebuild -a arm64 && electron-builder --mac --arm64",
+    "pack:win": "tsc && electron-rebuild -a x64 && electron-builder --win --x64",
+    "dist": "tsc && electron-rebuild -a x64 && electron-builder --x64 --mac --win"
+  },
+  "author": "atlas",
+  "dependencies": {
+    "electron-overlay-window": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.4",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8",
+    "electron-rebuild": "^3.2.9",
+    "eslint": "^9.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "typescript": "^5.6.3"
+  },
+  "build": {
+    "productName": "Train Lag",
+    "appId": "com.atlas.trainlag",
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "assets/AppIcon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/AppIcon.ico"
+    }
+  }
+}
