@@ -88,7 +88,7 @@ async function createWindow(): Promise<void> {
 
     OverlayController.attachByTitle(
         state.mainWindow, 
-        platform() === 'darwin' ? 'Roblox' : 'RobloxPlayerBeta.exe'
+        platform() === 'darwin' ? 'Roblox' : 'Roblox'
     );
 
     state.mainWindow.on('close', async (e) => {
