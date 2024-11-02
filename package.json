@@ -1,6 +1,6 @@
 {
   "name": "train-lag-overlay",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "An overlay system for Train Lag using Electron",
   "main": "output/main.js",
   "scripts": {
