@@ -15,7 +15,7 @@ jobs:
         os: [macos-latest, windows-latest]
         include:
           - os: macos-latest
-            builds: ['mac', 'mac-arm']
+            builds: ['mac-arm', 'mac-x64'] 
           - os: windows-latest
             builds: ['win']
     
@@ -42,7 +42,6 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      # Windows-specific setup
       - name: Setup Windows dependencies
         if: matrix.os == 'windows-latest'
         shell: powershell
@@ -50,7 +49,6 @@ jobs:
           npm config set python "$(python -c "import sys; print(sys.executable)")"
           yarn config set msvs_version 2019 --global
 
-      # macOS-specific setup
       - name: Setup macOS dependencies
         if: matrix.os == 'macos-latest'
         run: |
@@ -76,18 +74,8 @@ jobs:
           PYTHON: ${{ env.pythonLocation }}\python.exe
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Build macOS (Intel)
-        if: matrix.os == 'macos-latest'
-        run: |
-          yarn electron-rebuild -a x64
-          yarn pack:mac
-        env:
-          PYTHON: python3.11
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Build macOS (Apple Silicon)
+
+      - name: Build macOS ARM
         if: matrix.os == 'macos-latest'
         run: |
           yarn electron-rebuild -a arm64
@@ -97,22 +85,32 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build macOS Intel
+        if: matrix.os == 'macos-13'  
+        run: |
+          yarn electron-rebuild -a x64
+          yarn pack:mac-x64
+        env:
+          PYTHON: python3.11
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload Windows Build
         if: matrix.os == 'windows-latest'
         run: |
-          curl -v -F "file=@dist/Train-Lag-Setup-0.3.0" http://162.19.154.182:9000/cdn/upload
+          curl -v -F "file=@dist/Train-Lag-Setup-0.3.0.exe" http://162.19.154.182:9000/cdn/upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
       - name: Upload macOS Intel Build
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-13'
         run: |
           curl -v -F "file=@dist/Train Lag-0.3.0.dmg" http://162.19.154.182:9000/cdn/upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Upload macOS ARM Build
         if: matrix.os == 'macos-latest'
         run: |
