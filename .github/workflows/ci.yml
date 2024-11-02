@@ -100,7 +100,7 @@ jobs:
       - name: Upload Windows Build
         if: matrix.os == 'windows-latest'
         run: |
-          curl -v -F "file=@dist/Train Lag Setup.exe" http://162.19.154.182:9000/cdn/upload
+          curl -v -F "file=@dist/Train Lag Setup-0.3.0.exe" http://162.19.154.182:9000/cdn/upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -108,7 +108,7 @@ jobs:
       - name: Upload macOS Intel Build
         if: matrix.os == 'macos-latest'
         run: |
-          curl -v -F "file=@dist/Train Lag-x64.dmg" http://162.19.154.182:9000/cdn/upload
+          curl -v -F "file=@dist/Train Lag-0.3.0.dmg" http://162.19.154.182:9000/cdn/upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
       - name: Upload macOS ARM Build
         if: matrix.os == 'macos-latest'
         run: |
-          curl -v -F "file=@dist/Train Lag-arm64.dmg" http://162.19.154.182:9000/cdn/upload
+          curl -v -F "file=@dist/Train Lag-0.3.0-arm64.dmg" http://162.19.154.182:9000/cdn/upload
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
