@@ -9,6 +9,7 @@
     "postinstall": "tsc && electron-rebuild",
     "pack:mac-x64": "tsc && electron-rebuild -a x64 && electron-builder --mac --x64",
     "pack:mac-arm": "tsc && electron-rebuild -a arm64 && electron-builder --mac --arm64",
+    "pack:win": "tsc && electron-rebuild -a x64 && electron-builder --win --x64",
     "dist:x64": "tsc && electron-rebuild -a x64 && electron-builder --mac --x64",
     "dist:arm": "tsc && electron-rebuild -a arm64 && electron-builder --mac --arm64"
   },
